@@ -5,16 +5,13 @@ def _init():
     global config
     config = {}
     # Init config
-    with open('config.json') as f:
-        config = json.loads(f.read())
     with open('DEVICES-KEY.bib') as f:
-        device_key = json.loads(f.read())
-        config['device_id'] = device_key['device_id']
-        config['secret'] = device_key['secret']
-
-
-def get_cfg():
-    return config
+        config.update(json.loads(f.read()))
+    with open('config.json') as f:
+        config.update(json.loads(f.read()))
+        # Update device id into config
+        for k, topic in config['cloud']['topics'].items():
+            config['cloud']['topics'][k] = topic.format(config['device_id'])
 
 
 _init()

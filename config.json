@@ -1,7 +1,11 @@
 {
 	"cloud": {
 		"url": "a16236a40f.iot-mqtts.cn-north-4.myhuaweicloud.com",
-		"port": 1883
+		"port": 1883,
+		"topics": {
+			"up": "$oc/devices/{}/sys/properties/report",
+			"down": "$oc/devices/{}/sys/messages/down"
+		}
 	},
 	"local": {
 		"url": "127.0.0.1",
