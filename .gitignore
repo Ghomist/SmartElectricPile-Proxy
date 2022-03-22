@@ -1,3 +1,6 @@
+# All python cache folder
 __pycache__
 */__pycache__
+
+# Devices key from huawei cloud
 DEVICES-KEY.bib
