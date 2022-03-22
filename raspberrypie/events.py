@@ -1,29 +1,20 @@
 import paho.mqtt.client as mqtt
 import json
 
-import config
+from config import config
+import utils.logger as logger
 import huaweicloud.client as cloud
-
-on_rc = {
-    '0': "Accepted",
-    '1': "Refused, unacceptable protocol version",
-    '2': "Refused, identifier rejected",
-    '3': "Refused, server unavailable",
-    '4': "Refused, bad user name or password",
-    '5': "Refused, not authorized",
-}
+from utils.mqtt_util import on_rc
 
 
 def on_connect(client: mqtt.Client, userdata, flags, rc):
-    log = 'Connect with return code: {} ({})'.format(
-        str(rc),
-        on_rc.get(str(rc), "Unknown return code")
-    )
-    print('[local] '+log)
+    log = f'Connect with return code: {str(rc)} ({on_rc(rc)})'
+    logger.log('local', log)
 
 
 def on_message(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
-    print('[local] '+message.payload)
+    payload = message.payload.decode('utf-8')
+    logger.log('local', payload)
     upload = {
         "services": [
             {
@@ -48,6 +39,6 @@ def on_message(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
         ]
     }
     cloud.get_cloud_client().publish(
-        f'$oc/devices/{config.get_cfg()["device_id"]}/sys/properties/report',
+        f'$oc/devices/{config["device_id"]}/sys/properties/report',
         payload=json.dumps(upload)
     )

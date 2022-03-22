@@ -1,8 +1,31 @@
 import paho.mqtt.client as mqtt
 import json
 
-import config
 import raspberrypie.client as local
+import utils.logger as logger
+from utils.mqtt_util import on_rc
+
+
+def on_command_down(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
+    payload = json.loads(msg.payload)
+    # Down command
+    if payload['service_id'] == "ReceiveTest" and payload['command_name'] == "DownInt":
+        local.get_local_client().publish(
+            "dev/01/down/cmd",
+            payload=payload['paras']['Number'],
+            qos=0
+        )
+
+
+def on_connect(client: mqtt.Client, userdata, flags, rc):
+    log = f'Connect with return code: {str(rc)} ({on_rc(rc)})'
+    logger.log('cloud', log)
+
+
+def on_message(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
+    payload = msg.payload.decode('utf-8')
+    logger.log('cloud', payload)
+
 
 on_rc = {
     '0': "Accepted",
@@ -12,26 +35,3 @@ on_rc = {
     '4': "Refused, bad user name or password",
     '5': "Refused, not authorized",
 }
-
-
-def on_connect(client: mqtt.Client, userdata, flags, rc):
-    log = 'Connect with return code: {} ({})'.format(
-        str(rc),
-        on_rc.get(str(rc), "Unknown return code")
-    )
-    print('[cloud] '+log)
-
-
-def on_message(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
-    print(f'[cloud] Topic: {message.topic}')
-    if mqtt.topic_matches_sub("$oc/#", message.topic):
-        msg = json.loads(message.payload)
-        # Log
-        print('[cloud] Msg: '+str(msg))
-        # Down command
-        if msg['service_id'] == "ReceiveTest" and msg['command_name'] == "DownInt":
-            local.get_local_client().publish(
-                "dev/01/down/cmd",
-                payload=msg['paras']['Number'],
-                qos=0
-            )
