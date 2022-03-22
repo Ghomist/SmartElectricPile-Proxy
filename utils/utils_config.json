@@ -1,0 +1,6 @@
+{
+	"logger": {
+		"max-len": 20,
+		"time-log": true
+	}
+}
