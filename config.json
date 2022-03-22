@@ -1,0 +1,10 @@
+{
+	"cloud": {
+		"url": "a16236a40f.iot-mqtts.cn-north-4.myhuaweicloud.com",
+		"port": 1883
+	},
+	"local": {
+		"url": "127.0.0.1",
+		"port": 1883
+	}
+}
