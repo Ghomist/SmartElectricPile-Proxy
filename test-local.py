@@ -1,14 +1,19 @@
 import paho.mqtt.client as mqtt
 from threading import Thread
 
+from config import config
+
+print(config)
+exit()
+
 
 def on_connect(client: mqtt.Client, userdata, flags, rc):
-    print("[LOG] Connected local broker successfully.")
-    print('[LOG] Try to publish a message with: mosquitto_pub -t "test" -m "Hello! MQTT!"')
+    print("[TEST] Connected local broker successfully.")
+    print('[TEST] Try to publish a message with: mosquitto_pub -t "test" -m "Hello! MQTT!"')
 
 
 def on_message(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
-    print("[LOG] RECEIVED! "+message.payload.decode('utf-8'))
+    print("[TEST] RECEIVED! "+message.payload.decode('utf-8'))
 
 
 client = mqtt.Client()
