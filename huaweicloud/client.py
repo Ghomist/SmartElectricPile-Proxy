@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 
-import huaweicloud.aaa.client_id_generator as generator
+import huaweicloud.client_id_generator as generator
 import huaweicloud.events as events
 
 
