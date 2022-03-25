@@ -5,7 +5,7 @@
 		"topics": {
 			"all": "$oc/#",
 			"up": "$oc/devices/{}/sys/properties/report",
-			"down": "$oc/devices/{}/sys/commands/#",
+			"cmd-down": "$oc/devices/{}/sys/commands/#",
 			"msg-down": "$oc/devices/{}/sys/messages/down"
 		}
 	},

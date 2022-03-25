@@ -14,7 +14,7 @@ def main():
     cloud.init(cfg['device_id'], cfg['secret'])
     cloud_client = cloud.get_cloud_client()
     cloud_client.connect(cfg['cloud']['url'], port=cfg['cloud']['port'])
-    cloud_client.subscribe((cfg['cloud']['topics']['down'], 0))
+    cloud_client.subscribe((cfg['cloud']['topics']['cmd-down'], 0))
 
     # raspberry pie
     pie.init()

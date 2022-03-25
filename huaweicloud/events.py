@@ -8,6 +8,10 @@ from config import config
 
 
 def on_command_down(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
+    # Exclude respone messages
+    if "response" in msg.topic:
+        return
+
     payload = json.loads(msg.payload)
     # Down command
     if payload['service_id'] == "SwitchLight":
@@ -19,6 +23,11 @@ def on_command_down(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
             payload=json.dumps(cmd),
             qos=1
         )
+
+    # Respone
+    resp_topic = "commands/response/".join(msg.topic.split('commands/'))
+    resp_payload = {"result_code": 0}  # default: true
+    client.publish(topic=resp_topic, payload=json.dumps(resp_payload))
 
 
 def on_connect(client: mqtt.Client, userdata, flags, rc):
