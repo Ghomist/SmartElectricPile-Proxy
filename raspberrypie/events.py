@@ -43,11 +43,7 @@ def upload(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
     }
 
     # publish
-    cloud.get_cloud_client().publish(
-        config['cloud']['topics']['up'],
-        # f'$oc/devices/{config["device_id"]}/sys/properties/report',
-        payload=json.dumps(upload)
-    )
+    cloud.get_cloud_client().publish(config['cloud']['topics']['up'], payload=json.dumps(upload))
 
 
 def on_connect(client: mqtt.Client, userdata, flags, rc):
