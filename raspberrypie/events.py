@@ -11,18 +11,14 @@ def upload(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
     data = json.loads(message.payload)
 
     # touch
-    touched: int
+    touched = 0
     if data['capacitanceTouch']['value'] < 50:
         touched = 1
-    else:
-        touched = 0
 
     # light state
-    light_on: int
+    light_on = 0
     if data['lightState']['value'] == True:
         light_on = 1
-    else:
-        light_on = 0
 
     # upload payload
     upload = {
