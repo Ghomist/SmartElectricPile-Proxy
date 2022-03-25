@@ -19,7 +19,7 @@ def upload(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
 
     # light state
     light_on: int
-    if data['light']['value'] == True:
+    if data['lightState']['value'] == True:
         light_on = 1
     else:
         light_on = 0

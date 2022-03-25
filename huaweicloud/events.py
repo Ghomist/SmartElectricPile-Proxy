@@ -16,7 +16,7 @@ def on_command_down(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
         local.get_local_client().publish(
             "dev/01/down/cmd",
             payload=json.dumps(cmd),
-            qos=0
+            qos=1
         )
 
 

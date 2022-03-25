@@ -23,7 +23,7 @@ def main():
     local_client = pie.get_local_client()
     local_client.connect(cfg['local']['url'], port=cfg['local']['port'])
     local_client.subscribe(
-        ("$dev/+/up/data", 0)
+        ("dev/+/up/data", 0)
     )
 
     # Start
