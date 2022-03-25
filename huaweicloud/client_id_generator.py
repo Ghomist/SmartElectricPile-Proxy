@@ -9,7 +9,7 @@ def generate(device_id: str, secret: str):
 
     time_stamp = UTC_format_time()
 
-    client_id = device_id + "_0_0_"+time_stamp
+    client_id = device_id+"_0_0_"+time_stamp
     username = device_id
     password = HmacSHA256(secret, time_stamp)
 
