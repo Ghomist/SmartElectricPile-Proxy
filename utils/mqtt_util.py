@@ -7,4 +7,4 @@ def on_rc(rc) -> str:
         '4': "Refused, bad user name or password",
         '5': "Refused, not authorized",
     }
-    return on_rc.get(rc, "Unknown return code")
+    return on_rc.get(str(rc), "Unknown return code")

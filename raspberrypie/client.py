@@ -14,6 +14,7 @@ def init():
     # Callbacks
     client.on_connect = events.on_connect
     client.on_message = events.on_message
+    client.message_callback_add("dev/+/up/data", events.upload)
 
 
 def get_local_client():

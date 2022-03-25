@@ -9,10 +9,13 @@ from utils.mqtt_util import on_rc
 def on_command_down(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
     payload = json.loads(msg.payload)
     # Down command
-    if payload['service_id'] == "ReceiveTest" and payload['command_name'] == "DownInt":
+    if payload['service_id'] == "SwitchLight":
+        cmd = {
+            "cmd": payload['command_name']
+        }
         local.get_local_client().publish(
             "dev/01/down/cmd",
-            payload=payload['paras']['Number'],
+            payload=json.dumps(cmd),
             qos=0
         )
 
@@ -25,13 +28,3 @@ def on_connect(client: mqtt.Client, userdata, flags, rc):
 def on_message(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
     payload = msg.payload.decode('utf-8')
     logger.log('cloud', payload)
-
-
-on_rc = {
-    '0': "Accepted",
-    '1': "Refused, unacceptable protocol version",
-    '2': "Refused, identifier rejected",
-    '3': "Refused, server unavailable",
-    '4': "Refused, bad user name or password",
-    '5': "Refused, not authorized",
-}
