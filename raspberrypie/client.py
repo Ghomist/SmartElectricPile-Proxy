@@ -7,7 +7,7 @@ from config import config
 def init():
     # Client id, protocol version
     global client
-    client = mqtt.Client(client_id="", protocol=mqtt.MQTTv311)
+    client = mqtt.Client(client_id="mqtt_proxy", protocol=mqtt.MQTTv311)
 
     # Client id, username
     # client.username_pw_set(username, password)
