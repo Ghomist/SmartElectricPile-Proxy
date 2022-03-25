@@ -50,3 +50,7 @@ def on_connect(client: mqtt.Client, userdata, flags, rc):
 def on_message(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
     payload = message.payload.decode('utf-8')
     logger.log('local', payload)
+
+
+def on_disconnect(client, userdata, rc):
+    logger.log('local', f"Disconnet(rc: {str(rc)})")

@@ -14,6 +14,7 @@ def init():
 
     # Callbacks
     client.on_connect = events.on_connect
+    client.on_disconnect = events.on_disconnect
     client.message_callback_add(config['local']['topics']['all'], events.on_message)
     client.message_callback_add(config['local']['topics']['up'], events.upload)
 

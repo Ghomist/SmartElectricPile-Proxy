@@ -18,6 +18,7 @@ def init(device_id, secret):
 
     # Set callback functions
     client.on_connect = events.on_connect
+    client.on_disconnect = events.on_disconnect
     client.message_callback_add(config['cloud']['topics']['all'], events.on_message)
     client.message_callback_add(config['cloud']['topics']['down'], events.on_command_down)
 

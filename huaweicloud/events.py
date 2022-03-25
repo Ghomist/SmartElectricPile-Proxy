@@ -29,3 +29,7 @@ def on_connect(client: mqtt.Client, userdata, flags, rc):
 def on_message(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
     payload = msg.payload.decode('utf-8')
     logger.log('cloud', payload)
+
+
+def on_disconnect(client, userdata, rc):
+    logger.log('cloud', f"Disconnet(rc: {str(rc)})")
