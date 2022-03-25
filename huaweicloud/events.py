@@ -29,6 +29,8 @@ def on_message(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
     payload = msg.payload.decode('utf-8')
     logger.log('cloud', payload)
 
+    return
+
     payload = json.loads(msg.payload)
     # Down command
     if payload['service_id'] == "SwitchLight":

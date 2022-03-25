@@ -18,15 +18,8 @@ def init(device_id, secret):
 
     # Set callback functions
     client.on_connect = events.on_connect
-    client.on_message = events.on_message
-    # client.message_callback_add(
-    #     config['cloud']['topics']['down'],
-    #     events.on_message
-    # )
-    # client.message_callback_add(
-    #     config['cloud']['topics']['down'],
-    #     events.on_command_down
-    # )
+    client.message_callback_add(config['cloud']['topics']['all'], events.on_message)
+    client.message_callback_add(config['cloud']['topics']['down'], events.on_command_down)
 
 
 def get_cloud_client():

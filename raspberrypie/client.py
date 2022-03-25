@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 
 import raspberrypie.events as events
+from config import config
 
 
 def init():
@@ -13,8 +14,8 @@ def init():
 
     # Callbacks
     client.on_connect = events.on_connect
-    client.message_callback_add("#", events.on_message)
-    client.message_callback_add("dev/+/up/data", events.upload)
+    client.message_callback_add(config['local']['topics']['all'], events.on_message)
+    client.message_callback_add(config['local']['topics']['up'], events.upload)
 
 
 def get_local_client():
