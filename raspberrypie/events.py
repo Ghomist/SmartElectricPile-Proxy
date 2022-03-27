@@ -8,7 +8,9 @@ from utils.mqtt_util import on_rc
 
 
 def upload(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
-    data = json.loads(message.payload.decode('utf-8'))
+    print(message.payload)
+    return
+    # data = json.loads(message.payload)
 
     # touch
     touched = 0
