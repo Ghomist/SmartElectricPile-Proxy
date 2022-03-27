@@ -8,7 +8,7 @@ from utils.mqtt_util import on_rc
 
 
 def upload(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
-    payload = message.payloads.replace("'", "\"")
+    payload = message.payload.replace(b"'", b"\"")
     data = json.loads(payload)
 
     # touch

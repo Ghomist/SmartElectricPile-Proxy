@@ -15,7 +15,7 @@
 		"topics": {
 			"all": "dev/#",
 			"up": "dev/+/up/data",
-			"down": "dev/{}/down/cmd"
+			"down": "dev/01/down/cmd"
 		}
 	}
 }
