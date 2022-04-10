@@ -9,7 +9,11 @@ from utils.mqtt_util import on_rc
 
 def upload(client: mqtt.Client, userdata, message: mqtt.MQTTMessage):
     payload = message.payload.replace(b"'", b"\"")
-    data = json.loads(payload)
+    try:
+        data = json.loads(payload)
+    except json.JSONDecodeError:
+        print(logger.log("local", "Decode Error!"))
+        return
 
     # touch
     touched = 0
