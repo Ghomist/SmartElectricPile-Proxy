@@ -12,6 +12,8 @@ def on_command_down(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
     if "response" in msg.topic:
         return
 
+    # asdasfaf
+
     payload = json.loads(msg.payload)
     # Down command
     if payload['service_id'] == "SwitchLight":
