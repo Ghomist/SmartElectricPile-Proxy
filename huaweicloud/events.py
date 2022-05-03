@@ -1,7 +1,6 @@
 import paho.mqtt.client as mqtt
 import json
 
-import raspberrypie.client as local
 import utils.logger as logger
 from utils.mqtt_util import on_rc
 from config import config
@@ -12,19 +11,17 @@ def on_command_down(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
     if "response" in msg.topic:
         return
 
-    # asdasfaf
-
     payload = json.loads(msg.payload)
     # Down command
-    if payload['service_id'] == "SwitchLight":
-        cmd = {
-            "cmd": payload['command_name']
-        }
-        local.get_local_client().publish(
-            config['local']['topics']['down'],
-            payload=json.dumps(cmd),
-            qos=1
-        )
+    # if payload['service_id'] == "SwitchLight":
+    #     cmd = {
+    #         "cmd": payload['command_name']
+    #     }
+    #     local.get_local_client().publish(
+    #         config['local']['topics']['down'],
+    #         payload=json.dumps(cmd),
+    #         qos=1
+    #     )
 
     # Respone
     resp_topic = "commands/response/".join(msg.topic.split('commands/'))

@@ -4,7 +4,7 @@ from threading import Thread
 
 import config
 import huaweicloud.client as cloud
-import raspberrypie.client as pie
+from local.local_server import SocketServer
 
 
 def main():
@@ -20,19 +20,13 @@ def main():
         print("Failed connecting to cloud.")
         exit()
 
-    # raspberry pie
-    pie.init()
-    local_client = pie.get_local_client()
-    try:
-        local_client.connect(cfg['local']['url'], port=cfg['local']['port'])
-        local_client.subscribe((cfg['local']['topics']['up'], 0))
-    except ConnectionRefusedError:
-        print("No local broker found. Try with 'mosquitto'.")
-        exit()
-
     # Start
     Thread(None, cloud_client.loop_forever).start()
-    Thread(None, local_client.loop_forever).start()
+
+    global server
+    server = SocketServer(8876)
+    server.start()
+
     # print("Connecting finished.")
     # cloud_client.disconnect()
     # local_client.disconnect()
