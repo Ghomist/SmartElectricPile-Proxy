@@ -8,14 +8,5 @@
 			"cmd-down": "$oc/devices/{}/sys/commands/#",
 			"msg-down": "$oc/devices/{}/sys/messages/down"
 		}
-	},
-	"local": {
-		"url": "127.0.0.1",
-		"port": 1883,
-		"topics": {
-			"all": "dev/#",
-			"up": "dev/+/up/data",
-			"down": "dev/01/down/cmd"
-		}
 	}
 }
