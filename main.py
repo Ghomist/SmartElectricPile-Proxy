@@ -7,6 +7,11 @@ import huaweicloud.client as cloud
 from local.local_server import SocketServer
 
 
+# def get_server():
+#     global _server
+#     return _server
+
+
 def main():
     cfg = config.config
 
@@ -23,9 +28,16 @@ def main():
     # Start
     Thread(None, cloud_client.loop_forever).start()
 
-    global server
-    server = SocketServer(8876)
-    server.start()
+    global _server
+    _server = SocketServer(8876)
+    _server.start()
+
+    while True:
+        cmd = input().split(' ')
+        if cmd[0] == 'ALL':
+            _server.send_to(cmd[1])
+        else:
+            _server.send_to(cmd[1], cmd[0])
 
     # print("Connecting finished.")
     # cloud_client.disconnect()

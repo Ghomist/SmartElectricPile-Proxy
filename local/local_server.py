@@ -38,7 +38,19 @@ class SocketServer(threading.Thread):
             self.cnt += 1
             print(f'[{self.cnt}] {data}')
 
-    def send_to(self, id: int, msg: str):
-        id = str(id)
-        target_soc: socket = self.conn_dict[id]
-        target_soc.send(msg)
+    def send_to(self, msg, id=None):
+        print('send'+msg)
+        if not id:
+            # Send to all
+            for _id, _conn in self.conn_dict.items():
+                try:
+                    _conn.send(msg.encode('utf-8'))
+                except:
+                    print(f'Error id: {_id}')
+        else:
+            id = str(id)
+            target_soc: socket = self.conn_dict.get(id)
+            try:
+                target_soc.send(msg.encode('utf-8'))
+            except:
+                print(f'Error id: {id}')

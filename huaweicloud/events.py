@@ -13,15 +13,16 @@ def on_command_down(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
 
     payload = json.loads(msg.payload)
     # Down command
-    # if payload['service_id'] == "SwitchLight":
-    #     cmd = {
-    #         "cmd": payload['command_name']
-    #     }
-    #     local.get_local_client().publish(
-    #         config['local']['topics']['down'],
-    #         payload=json.dumps(cmd),
-    #         qos=1
-    #     )
+    if payload['service_id'] == "LightService" and payload['command_name'] == "SwitchLight":
+        get_server().send_to(payload['paras']['state'])
+        # cmd = {
+        #     "cmd": payload['command_name']
+        # }
+        # local.get_local_client().publish(
+        #     config['local']['topics']['down'],
+        #     payload=json.dumps(cmd),
+        #     qos=1
+        # )
 
     # Respone
     resp_topic = "commands/response/".join(msg.topic.split('commands/'))
