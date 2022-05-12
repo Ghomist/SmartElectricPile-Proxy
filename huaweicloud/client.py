@@ -4,6 +4,8 @@ import huaweicloud.client_id_generator as generator
 import huaweicloud.events as events
 from config import config
 
+import json
+
 
 def init(device_id, secret):
     # Client id, username, password
@@ -25,3 +27,26 @@ def init(device_id, secret):
 
 def get_cloud_client():
     return client
+
+
+def test():
+    # test payload
+    upload = {
+        "services": [
+            {
+                "service_id": "CapacitanceTouch",
+                "properties": {
+                    "touched": 1
+                }
+            },
+            {
+                "service_id": "LightState",
+                "properties": {
+                    "state": 1
+                }
+            }
+        ]
+    }
+
+    # publish
+    get_cloud_client().publish(config['cloud']['topics']['up'], payload=json.dumps(upload))

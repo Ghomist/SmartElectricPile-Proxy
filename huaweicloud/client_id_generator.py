@@ -25,11 +25,7 @@ def HmacSHA256(msg, key):
     return hmac.new(key.encode('utf-8'), msg.encode('utf-8'), sha256).hexdigest()
 
 
-def main():
+if __name__ == "__main__":
     device_id = input('Device id: ')
     secret = input('Secret: ')
     print("\n".join(generate(device_id, secret)))
-
-
-if __name__ == "__main__":
-    main()

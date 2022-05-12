@@ -33,6 +33,11 @@ def main():
     # Start
     Thread(None, cloud_client.loop_forever).start()
     Thread(None, local_client.loop_forever).start()
+
+    while True:
+        a = input()
+        cloud.test()
+        print('ok')
     # print("Connecting finished.")
     # cloud_client.disconnect()
     # local_client.disconnect()
