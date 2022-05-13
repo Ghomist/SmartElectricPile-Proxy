@@ -1,52 +1,68 @@
 import paho.mqtt.client as mqtt
+from threading import Thread
 
 import huaweicloud.client_id_generator as generator
-import huaweicloud.events as events
-from config import config
-
-import json
+from config import *
 
 
-def init(device_id, secret):
-    # Client id, username, password
-    client_id, username, password = generator.generate(device_id, secret)
+class CloudClient:
+    def __init__(self, device_id, secret, log_all=False):
+        self.log = log_all
+        # Client id, username, password
+        self.client_id, self.username, self.password = generator.generate(device_id, secret)
 
-    # Client id, protocol version
-    global client
-    client = mqtt.Client(client_id=client_id, protocol=mqtt.MQTTv311)
+        # Client id, protocol version
+        self.client = mqtt.Client(client_id=self.client_id, protocol=mqtt.MQTTv311)
 
-    # Client id, username
-    client.username_pw_set(username, password)
+        # Client id, username
+        self.client.username_pw_set(self.username, self.password)
 
-    # Set callback functions
-    client.on_connect = events.on_connect
-    client.on_disconnect = events.on_disconnect
-    client.message_callback_add(config['cloud']['topics']['all'], events.on_message)
-    client.message_callback_add(config['cloud']['topics']['cmd-down'], events.on_command_down)
+        # Set callback functions
+        self.client.on_connect = self.on_connect
+        self.client.on_disconnect = self.on_disconnect
+        self.client.message_callback_add(cloud_topics['all'], self.on_message)
+        self.client.message_callback_add(cloud_topics['cmd'], self.on_command_down)
 
+        # subscribe
+        self.client.subscribe()
 
-def get_cloud_client():
-    return client
+    def start(self):
+        Thread(target=self.client.loop_forever).start()
 
+    def stop(self):
+        # self.client.loop_stop()
+        self.client.disconnect()
 
-def test():
-    # test payload
-    upload = {
-        "services": [
-            {
-                "service_id": "CapacitanceTouch",
-                "properties": {
-                    "touched": 1
-                }
-            },
-            {
-                "service_id": "LightState",
-                "properties": {
-                    "state": 1
-                }
+    def on_connect(self, client: mqtt.Client, userdata, flags, rc):
+        log = f'Connect with return code: {str(rc)} ({on_rc(rc)})'
+        logger.log('cloud', log)
+
+    def on_message(self, client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
+        if self.log:
+            payload = msg.payload.decode('utf-8')
+            logger.log('cloud', payload)
+
+    def on_disconnect(self, client, userdata, rc):
+        logger.log('cloud', f"Disconnet(rc: {str(rc)})")
+
+    def on_command_down(self, client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
+        # TODO
+        return
+
+        # Exclude respone messages
+        if "response" in msg.topic:
+            return
+
+        payload = json.loads(msg.payload)
+        # Down command
+        if payload['service_id'] == "SwitchLight":
+            cmd = {
+                "cmd": payload['command_name']
             }
-        ]
-    }
+            local.get_local_client().publish(
+                config['local']['topics']['down'],
+                payload=json.dumps(cmd),
+                qos=1
+            )
 
-    # publish
-    get_cloud_client().publish(config['cloud']['topics']['up'], payload=json.dumps(upload))
+        respone_cmd(msg.topic)
